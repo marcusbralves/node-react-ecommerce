@@ -19,8 +19,6 @@ mongoose.connect(mongodbUrl, {
 const app = express();
 app.use(bodyParser.json());
 
-product.save();
-
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
