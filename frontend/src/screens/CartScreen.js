@@ -97,6 +97,7 @@ function CartScreen(props) {
         <p>{ address && address.city && address.state ? `${address.city}-${address.state}` : "" }</p>
         <p>{ address ? address.street : "" }</p>
         <p>{ address ? address.neighborhood : "" }</p>
+        <p>CEP:</p>
         <input onChange={e => getAddress(e.target.value)}>
         </input>
       </div>

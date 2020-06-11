@@ -2,6 +2,8 @@ import express from 'express';
 import Order from '../models/orderModel';
 import { isAuth, isAdmin } from '../util';
 import cep from "cep-promise";
+import User from '../models/userModel';
+import { sendEmail } from "../helpers/email";
 
 const router = express.Router();
 
@@ -51,6 +53,13 @@ router.post("/", isAuth, async (req, res) => {
     totalPrice: req.body.totalPrice,
   });
   const newOrderCreated = await newOrder.save();
+
+  const user = await User.findById(req.user._id);
+
+  sendEmail(user.email, `New Order On Amazona`, `
+    Price: ${newOrderCreated.totalPrice}
+  `);
+
   res.status(201).send({ message: "New Order Created", data: newOrderCreated });
 });
 
