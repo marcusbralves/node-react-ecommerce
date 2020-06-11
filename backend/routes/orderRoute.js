@@ -1,6 +1,7 @@
 import express from 'express';
 import Order from '../models/orderModel';
 import { isAuth, isAdmin } from '../util';
+import cep from "cep-promise";
 
 const router = express.Router();
 
@@ -8,6 +9,13 @@ router.get("/", isAuth, async (req, res) => {
   const orders = await Order.find({}).populate('user');
   res.send(orders);
 });
+
+router.get("/cep/:cep", async (req, res) => {
+  const userCep = await cep(req.params.cep);
+  console.log(userCep);
+  res.send(userCep);
+});
+
 router.get("/mine", isAuth, async (req, res) => {
   const orders = await Order.find({ user: req.user._id });
   res.send(orders);

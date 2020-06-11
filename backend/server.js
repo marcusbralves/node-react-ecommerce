@@ -6,8 +6,10 @@ import config from './config';
 import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
 import orderRoute from './routes/orderRoute';
+// import Product from './models/productModel';
 
 const mongodbUrl = config.MONGODB_URL;
+
 mongoose.connect(mongodbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,6 +19,20 @@ mongoose.connect(mongodbUrl, {
 
 const app = express();
 app.use(bodyParser.json());
+
+// const product = new Product({
+//   name: "Teste",
+//   price: 1,
+//   image: "https://eloquentjavascript.net/img/cover.jpg",
+//   brand: "Teste",
+//   category: "categoria",
+//   countInStock: 2,
+//   description: "req.body.description",
+//   rating: 4,
+//   numReviews: 3,
+// });
+
+// product.save();
 
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);

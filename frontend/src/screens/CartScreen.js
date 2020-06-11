@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Axios from "axios";
+
 function CartScreen(props) {
 
   const cart = useSelector(state => state.cart);
@@ -23,6 +25,24 @@ function CartScreen(props) {
   const checkoutHandler = () => {
     props.history.push("/signin?redirect=shipping");
   }
+
+  const [address, setAddress] = useState({});
+
+  const getAddress = async (cep) => {
+    try {
+      console.log("CEP", cep);
+      const cepOnlyNumbers = cep.replace(/\D/g, "");
+
+      console.log("cepOnlyNumbers", cepOnlyNumbers);
+      if (cepOnlyNumbers.length === 8) {
+        const { data } = await Axios.get("/api/orders/cep/" + cepOnlyNumbers);
+
+        setAddress(data);
+      }
+    } catch (error) {
+      setAddress({});
+    }
+  };
 
   return <div className="cart">
     <div className="cart-list">
@@ -73,6 +93,13 @@ function CartScreen(props) {
         }
       </ul>
 
+      <div>
+        <p>{ address && address.city && address.state ? `${address.city}-${address.state}` : "" }</p>
+        <p>{ address ? address.street : "" }</p>
+        <p>{ address ? address.neighborhood : "" }</p>
+        <input onChange={e => getAddress(e.target.value)}>
+        </input>
+      </div>
     </div>
     <div className="cart-action">
       <h3>
