@@ -12,7 +12,6 @@ router.get("/", isAuth, async (req, res) => {
 
 router.get("/cep/:cep", async (req, res) => {
   const userCep = await cep(req.params.cep);
-  console.log(userCep);
   res.send(userCep);
 });
 

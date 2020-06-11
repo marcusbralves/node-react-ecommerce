@@ -1,6 +1,6 @@
 import Axios from "axios";
 import Cookie from "js-cookie";
-import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING, CART_SAVE_PAYMENT, GET_ADDRESS } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING, CART_SAVE_PAYMENT } from "../constants/cartConstants";
 
 const addToCart = (productId, qty) => async (dispatch, getState) => {
   try {
@@ -17,20 +17,6 @@ const addToCart = (productId, qty) => async (dispatch, getState) => {
     });
     const { cart: { cartItems } } = getState();
     Cookie.set("cartItems", JSON.stringify(cartItems));
-
-  } catch (error) {
-
-  }
-}
-
-const getAddress = (cep) => async (dispatch, getState) => {
-  try {
-    const { data } = await Axios.get("/api/orders/cep/" + cep);
-    dispatch({
-      type: GET_ADDRESS, payload: data
-    });
-    const { address } = getState();
-    Cookie.set("address", JSON.stringify(address));
 
   } catch (error) {
 
